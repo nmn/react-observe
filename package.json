@@ -1,5 +1,5 @@
 {
-  "name": "react-observe",
+  "name": "react-observe-polyfill",
   "version": "1.0.0",
   "description": "A complete polyfill for the upcoming React Observe API",
   "main": "lib/index.js",
