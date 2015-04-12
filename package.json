@@ -1,0 +1,24 @@
+{
+  "name": "react-observe",
+  "version": "1.0.0",
+  "description": "A complete polyfill for the upcoming React Observe API",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "babel src --out-dir lib",
+    "watch": "babel src --out-dir lib --watch --source-maps-inline"
+  },
+  "keywords": [
+    "react",
+    "react-component",
+    "reactjs",
+    "animation"
+  ],
+  "peerDependencies": {
+    "react": "^0.13.1"
+  },
+  "author": "Naman Goel",
+  "license": "MIT",
+  "devDependencies": {
+    "babel": "^5.0.12"
+  }
+}
