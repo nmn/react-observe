@@ -39,16 +39,17 @@ export default function polyfillObserve(ComposedComponent, observe) {
     _resubscribe(props, context) {
       const newObservables = this.observe(props, context)
       const newSubscriptions = {}
+      const that = this
 
       for (let key in newObservables) {
-        newSubscriptions[key] = newObservables[key].subscribe({
-          onNext: (value) => {
-            this.data[key] = value
-            this.forceUpdate()
+        newSubscriptions[key] = newObservables[key].subscribe(
+          function onNext(value){
+            that.data[key] = value
+            that.forceUpdate()
           },
-          onError: () => {},
-          onCompleted: () => {}
-        })
+          function onError(){},
+          function onCompleted(){}
+        )
       }
 
       this._unsubscribe()
