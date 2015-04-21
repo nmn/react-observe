@@ -16,21 +16,21 @@ export default function polyfillObserve(ComposedComponent, observe) {
     }
 
     componentWillUpdate(...args){
-      super.componentWillUpdate(...args)
+      super.componentWillUpdate && super.componentWillUpdate(...args)
       if(this.observe){
         this._resubscribe(this.props, this.context)
       }
     }
 
     componentWillReceiveProps(newProps, newContext) {
-      super.componentWillReceiveProps(newProps, newContext)
+      super.componentWillReceiveProps && super.componentWillReceiveProps(newProps, newContext)
       if(this.observe){
         this._resubscribe(newProps, newContext)
       }
     }
 
     componentWillUnmount() {
-      super.componentWillUnmount()
+      super.componentWillUnmount && super.componentWillUnmount()
       if(this._subscriptions){
         this._unsubscribe()
       }
