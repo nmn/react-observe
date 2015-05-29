@@ -1,22 +1,24 @@
-import React, { Component } from 'react'
 import assign from 'react/lib/Object.assign'
 
-export default function polyfillObserve(ComposedComponent, observe) {
+export function polyfillObserve(ComposedComponent) {
 
-  class Enhancer extends ComposedComponent {
+  class Enhanced extends ComposedComponent {
     constructor(props, context) {
       super(props, context)
+      this.state = this.state || {}
 
       if(this.observe){
         this._subscriptions = {}
-        this.data = {}
-        this._resubscribe(props, context)
+        this.state.__data = {}
       }
-      
+
     }
 
-    componentWillUpdate(...args){
-      super.componentWillUpdate && super.componentWillUpdate(...args)
+    get data(){
+      return this.state.__data
+    }
+
+    componentWillMount(){
       if(this.observe){
         this._resubscribe(this.props, this.context)
       }
@@ -44,8 +46,10 @@ export default function polyfillObserve(ComposedComponent, observe) {
       for (let key in newObservables) {
         newSubscriptions[key] = newObservables[key].subscribe(
           function onNext(value){
-            that.data[key] = value
-            that.forceUpdate()
+            that.setState(({__data}) => {
+              __data[key] = value
+              return {__data}
+            })
           },
           function onError(){},
           function onCompleted(){}
@@ -65,8 +69,8 @@ export default function polyfillObserve(ComposedComponent, observe) {
 
   }
 
-  Enhancer.propTypes = ComposedComponent.propTypes
-  Enhancer.contextTypes = ComposedComponent.contextTypes
+  Enhanced.propTypes = ComposedComponent.propTypes
+  Enhanced.contextTypes = ComposedComponent.contextTypes
 
-  return Enhancer
+  return Enhanced
 }
